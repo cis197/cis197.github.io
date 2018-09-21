@@ -5,40 +5,70 @@
     <link rel="stylesheet" type="text/css" href="styles.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
   </head>
+  <!--<body>-->
+    <!--<div class="container">-->
+      <!--<div class="row">-->
+        <!--<div class="col-md-12">-->
+          <!--<h1>Todos</h1>-->
+          <!--<form id="todo-form">-->
+            <!--<div class="form-group">-->
+              <!--<label>Todo text</label>-->
+              <!--<input type="text" class="form-control" id="todo-text">-->
+            <!--</div>-->
+            <!--<button class="btn btn-primary" type="submit">Add todo</button>-->
+          <!--</form>-->
+          <!--<ul id="todo-list">-->
+          <!--</ul>-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</div>-->
+  <!--</body>-->
   <body>
-    <div class="container">
-      <div class="row">
-        <div class="col-md-12">
-          <h1>Todos</h1>
-          <form id="todo-form">
-            <div class="form-group">
-              <label>Todo text</label>
-              <input type="text" class="form-control" id="todo-text">
-            </div>
-            <button class="btn btn-primary" type="submit">Add todo</button>
-          </form>
-          <ul id="todo-list">
-          </ul>
-        </div>
-      </div>
-    </div>
+    <h1>Todos</h1>
+    <form id="todo-form">
+      <input type="text" id="todo-text">
+      <button type="submit">Add todo</button>
+    </form>
+    <ul id="todo-list">
+    </ul>
   </body>
   <script src="jquery.js"></script>
   <script>
-    $('#todo-form').on('submit', function (e) {
-      e.preventDefault();
-      var todo = $('#todo-text').val();
-      // addTodo(todo);
-      addTodoFancy(todo)
-    })
-    // this is great and all, but weird in  that we are making a bunch of click listeners
-    function addTodo (text) {
-      var newTodo = $('<li>').text(text)
-      newTodo.data('done', false)
-      newTodo.append($('<button>').text('delete').on('click', function() {
-        $(this).parent().remove();
-      }))
-      newTodo.on('click', function () {
+    $(document).ready(function () {
+      $('#todo-form').on('submit', function (e) {
+        e.preventDefault();
+        var todo = $('#todo-text').val();
+        // addTodo(todo);
+        addTodoFancy(todo)
+      })
+      // this is great and all, but weird in  that we are making a bunch of click listeners
+      function addTodo (text) {
+        var newTodo = $('<li>').text(text)
+        newTodo.data('done', false)
+        newTodo.append($('<button>').text('delete').on('click', function() {
+          $(this).parent().remove();
+        }))
+        newTodo.on('click', function () {
+          if ($(this).data('done') == false) {
+            $(this).css('text-decoration', 'line-through')
+            $(this).data('done', true);
+          } else {
+            $(this).css('text-decoration', 'none')
+            $(this).data('done', false);
+          }
+        })
+        $('#todo-list').append(newTodo);
+      }
+
+      function addTodoFancy(text) {
+        var newTodo = $('<li>').text(text)
+        newTodo.data('done', false)
+        newTodo.append($('<button>').text('delete'))
+        $('#todo-list').append(newTodo);
+      }
+
+      $('#todo-list').on('click', 'li', function () {
+        console.log($(this))
         if ($(this).data('done') == false) {
           $(this).css('text-decoration', 'line-through')
           $(this).data('done', true);
@@ -47,29 +77,10 @@
           $(this).data('done', false);
         }
       })
-      $('#todo-list').append(newTodo);
-    }
 
-    function addTodoFancy(text) {
-      var newTodo = $('<li>').text(text)
-      newTodo.data('done', false)
-      newTodo.append($('<button class="btn btn-danger">').text('delete'))
-      $('#todo-list').append(newTodo);
-    }
-
-    $('#todo-list').on('click', 'li', function () {
-      console.log($(this))
-      if ($(this).data('done') == false) {
-        $(this).css('text-decoration', 'line-through')
-        $(this).data('done', true);
-      } else {
-        $(this).css('text-decoration', 'none')
-        $(this).data('done', false);
-      }
-    })
-
-    $('#todo-list').on('click', 'button', function () {
-      $(this).parent().remove();
+      $('#todo-list').on('click', 'button', function () {
+        $(this).parent().remove();
+      })
     })
   </script>
 </html>
